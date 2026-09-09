@@ -4,6 +4,9 @@ My AI configuration, portable. One place for agent guidelines, MCP servers, plug
 hooks and skills — installable on any machine, for Claude Code, Codex, Cursor and
 OpenCode.
 
+Working on this repo with an AI agent? `AGENTS.md` at the root loads automatically and
+has the contract + the mistakes already made once — read that first.
+
 ## Install
 
 ```bash
