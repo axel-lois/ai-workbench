@@ -1,0 +1,14 @@
+# Global ignore — secrets and OS cruft, not project conventions.
+# Project-specific ignores still belong in each repo's own .gitignore.
+
+.env.local
+.env.*.local
+*.pem
+*.key
+*_rsa
+*_rsa.pub
+*_ed25519
+*_ed25519.pub
+
+.DS_Store
+Thumbs.db

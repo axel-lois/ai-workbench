@@ -16,7 +16,10 @@ node workbench.mjs
 Requires Node 18+. Zero npm dependencies.
 
 The script detects which tools you already have and pre-checks them. Pick, and it writes
-each one's config.
+each one's config. "Git safety net" isn't an AI tool — it's a pre-commit hook, a global
+gitignore, and a commit template, all set once via `git config --global` and always
+pointing straight at this repo. Written after a real GitHub token almost got committed
+while setting this repo up.
 
 Update with `git pull && node workbench.mjs`.
 

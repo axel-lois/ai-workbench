@@ -7,6 +7,7 @@ import path from 'node:path';
 import os from 'node:os';
 import readline from 'node:readline/promises';
 import { pathToFileURL } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = import.meta.dirname;
 const HOME = os.homedir();
@@ -138,6 +139,33 @@ async function discoverTargets() {
   return found;
 }
 
+function gitConfigGet(key) {
+  try {
+    return execFileSync('git', ['config', '--global', '--get', key], { encoding: 'utf8' }).trim();
+  } catch {
+    return null; // unset
+  }
+}
+
+// Not git-specific in spirit: any target can declare `configure` to set a global
+// git config key straight to a value (usually a path into its own directory). We
+// never overwrite a value that's already set to something else — same rule as
+// backup(): don't clobber state we didn't write.
+function applyConfigure(target, ctx, log) {
+  for (const [key, render] of Object.entries(target.configure ?? {})) {
+    const value = render({ ...ctx, dir: target.dir });
+    if (value == null) continue;
+    const current = gitConfigGet(key);
+    if (current === value) { log(`  = git config ${key}`); continue; }
+    if (current) {
+      log(`  ! git config ${key} is already "${current}" — left alone`);
+      continue;
+    }
+    execFileSync('git', ['config', '--global', key, value]);
+    log(`  ⚙ git config --global ${key} → ${short(value)}`);
+  }
+}
+
 function applyTarget(target, ctx) {
   const lines = [];
   const log = (l) => lines.push(l);
@@ -151,6 +179,7 @@ function applyTarget(target, ctx) {
     const content = render({ ...ctx, dir: target.dir }, existing);
     if (content != null) writeOut(abs, content, log);
   }
+  applyConfigure(target, ctx, log);
   return lines;
 }
 

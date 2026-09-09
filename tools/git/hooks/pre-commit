@@ -1,0 +1,17 @@
+#!/bin/sh
+# Scans staged changes for secret-shaped strings before allowing a commit.
+# Installed globally via core.hooksPath — runs in every repo, not just this one.
+# This exists because a GitHub PAT ended up staged in a template file during
+# this repo's own setup. Bypass a false positive with --no-verify.
+set -eu
+
+pattern='ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----|:\/\/[^\/[:space:]]+:[^\/@[:space:]]+@'
+
+hits=$(git diff --cached -U0 | grep -nE "$pattern" || true)
+
+if [ -n "$hits" ]; then
+  echo "pre-commit: possible secret in staged changes:" >&2
+  echo "$hits" >&2
+  echo "Remove it, or commit with --no-verify if this is a false positive." >&2
+  exit 1
+fi

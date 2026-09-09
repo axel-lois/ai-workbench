@@ -1,0 +1,5 @@
+
+# <type>(<scope>): <subject> — Conventional Commits, imperative, <=50 chars
+#
+# Body only when the "why" isn't obvious from the diff.
+# Types: feat fix docs refactor test chore build ci perf
