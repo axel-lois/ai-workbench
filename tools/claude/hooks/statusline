@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Resolves the caveman statusline wherever the plugin cache put it.
+# The cache path contains a version hash that changes on every plugin update,
+# so it must not be hardcoded in settings.json.
+set -euo pipefail
+
+target=$(ls -dt "$HOME"/.claude/plugins/cache/caveman/caveman/*/hooks/caveman-statusline.sh 2>/dev/null | head -1 || true)
+
+# No statusline plugin installed is not an error: emit nothing.
+[ -n "$target" ] || exit 0
+
+exec bash "$target"

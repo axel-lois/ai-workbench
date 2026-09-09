@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# SubagentStart hook: tell subagents to use codebase-memory-mcp tools.
+# Installed by codebase-memory-mcp. Fires when any subagent is spawned.
+# SubagentStart injects context via JSON additionalContext, not plain stdout.
+cat << 'REMINDER'
+{"hookSpecificOutput":{"hookEventName":"SubagentStart","additionalContext":"Code discovery: prefer codebase-memory-mcp tools (search_graph, trace_path, get_code_snippet, query_graph, get_architecture, search_code) over grep/file-read for navigating code. Use Grep/Glob/Read for text, configs, and non-code files."}}
+REMINDER

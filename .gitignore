@@ -1,0 +1,4 @@
+.env.local
+.installed.json
+*.bak-*
+node_modules/

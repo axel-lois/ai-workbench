@@ -1,0 +1,62 @@
+{
+  "model": "opusplan",
+  "alwaysThinkingEnabled": true,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+  "preferredCommitCoAuthorStyle": "omit",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/hooks/statusline"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/cbm-session-reminder" }]
+      },
+      {
+        "matcher": "resume",
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/cbm-session-reminder" }]
+      },
+      {
+        "matcher": "clear",
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/cbm-session-reminder" }]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/cbm-session-reminder" }]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Grep|Glob",
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/cbm-code-discovery-gate", "timeout": 5 }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "*",
+        "hooks": [{ "type": "command", "command": "~/.claude/hooks/cbm-subagent-reminder" }]
+      }
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "impeccable": { "source": { "source": "github", "repo": "pbakaus/impeccable" } },
+    "context-mode": { "source": { "source": "github", "repo": "mksglu/context-mode" } },
+    "caveman": { "source": { "source": "github", "repo": "JuliusBrussee/caveman" } },
+    "ponytail": { "source": { "source": "github", "repo": "DietrichGebert/ponytail" } }
+  },
+  "enabledPlugins": {
+    "security-guidance@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "impeccable@impeccable": true,
+    "context-mode@context-mode": true,
+    "caveman@caveman": true,
+    "ponytail@ponytail": true
+  }
+}
