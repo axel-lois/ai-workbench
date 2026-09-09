@@ -2,6 +2,10 @@ export default {
   name: 'OpenCode',
   detect: '~/.config/opencode',
 
+  // NOTE: OpenCode reads SKILL.md from skills/, same convention as the other three,
+  // but that directory already holds skills installed some other way. Replacing it
+  // whole is unsafe, so we don't link it — see README.
+
   emit: {
     '~/.config/opencode/opencode.json': (ctx, existing) => {
       const base = existing ? JSON.parse(existing) : { $schema: 'https://opencode.ai/config.json' };

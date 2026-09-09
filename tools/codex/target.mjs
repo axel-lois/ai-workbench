@@ -38,6 +38,10 @@ export default {
   name: 'Codex',
   detect: '~/.codex',
 
+  // NOTE: Codex reads SKILL.md from ~/.codex/skills/, same convention as the other
+  // three, but that directory already holds Codex's own built-in skills (.system/).
+  // Replacing the whole directory would hide them, so we don't link it — see README.
+
   emit: {
     '~/.codex/config.toml': (ctx, existing) => {
       const head = existing ? stripMcp(existing) : '';

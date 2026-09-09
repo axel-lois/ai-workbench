@@ -6,9 +6,11 @@ export default {
   detect: '~/.claude',
 
   // What you edit often gets linked: repo changes apply live.
+  // skills/ lives in shared/ because Claude Code, Codex, Cursor and OpenCode all read
+  // the same SKILL.md convention from their own global skills directory.
   links: {
     hooks: '~/.claude/hooks',
-    skills: '~/.claude/skills',
+    '../../shared/skills': '~/.claude/skills',
   },
 
   emit: {

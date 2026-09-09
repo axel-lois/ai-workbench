@@ -2,6 +2,10 @@ export default {
   name: 'Cursor',
   detect: '~/.cursor',
 
+  // NOTE: Cursor reads SKILL.md from ~/.cursor/skills/, same convention as the other
+  // three, but that directory may already hold skills installed some other way.
+  // Replacing it whole is unsafe, so we don't link it — see README.
+
   emit: {
     // Same shape as Claude Code, goes in as-is.
     '~/.cursor/mcp.json': (ctx, existing) => {

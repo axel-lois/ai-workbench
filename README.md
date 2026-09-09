@@ -38,15 +38,16 @@ where you use it.
 shared/          single source of truth
   AGENTS.md      agent behaviour
   mcp.json       MCP servers (secrets as ${VAR})
+  skills/        SKILL.md skills — same convention across all four tools
 tools/<name>/    one directory per tool
   target.mjs     where its files go and in what format
 workbench.mjs    the engine — generic, knows nothing about any tool
 ```
 
-**Link what you edit often, generate what differs per tool.** `hooks/` and `skills/` are
-linked, so editing the repo applies live. The MCP config files are derived from
-`shared/mcp.json` in three incompatible formats, so they are generated and refreshed by
-re-running the script.
+**Link what you edit often, generate what differs per tool.** `hooks/` and `shared/skills/`
+are linked into Claude Code, so editing the repo applies live. The MCP config files are
+derived from `shared/mcp.json` in three incompatible formats, so they are generated and
+refreshed by re-running the script.
 
 On Windows, directory links are created as *junctions*: no admin rights, no Developer
 Mode.
@@ -54,13 +55,25 @@ Mode.
 Nothing is clobbered silently — any existing file that isn't one of our links is moved to
 `<file>.bak-<timestamp>` first.
 
+### Skills are per-tool, on purpose
+
+All four tools read the same `SKILL.md` convention, each from its own global directory
+(`~/.claude/skills`, `~/.codex/skills`, `~/.cursor/skills`,
+`~/.config/opencode/skills`) — but only Claude Code's is linked to `shared/skills/`. The
+other three already have their own populated skills directories (Codex ships built-in
+skills under `skills/.system/`; Cursor and OpenCode may hold skills installed some other
+way), and a directory-level link would hide all of that, not merge with it. Sharing a
+skill across every tool today means copying it into each tool's own skills folder by
+hand.
+
 ## Adding things
 
 | I want to… | I do |
 |---|---|
 | Add an MCP server | add it to `shared/mcp.json`, re-run the script |
 | Change agent behaviour | edit `shared/AGENTS.md` — applies live |
-| Add a Claude hook or skill | drop it in `tools/claude/hooks/` or `skills/` — applies live |
+| Add a Claude skill | drop it in `shared/skills/` — applies live |
+| Add a Claude-only hook | drop it in `tools/claude/hooks/` — applies live |
 | Add a Claude plugin | add it to `enabledPlugins` in `tools/claude/settings.base.json` |
 | **Add a whole new tool** | create `tools/<name>/target.mjs` — the engine is never touched |
 
